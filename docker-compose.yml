@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  db:
+    image: mongo:latest
+    container_name: mongocont
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: app
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     DATABASE_URL: mongodb://db:27017/inventory
+  #   depends_on:
+  #     - db
+
+volumes:
+  mongo-data:
