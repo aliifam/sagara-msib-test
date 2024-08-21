@@ -19,6 +19,15 @@ class ShirtController {
     }
   }
 
+  async getAvailable(req, res) {
+    try {
+      const shirts = await ShirtService.getAvailableShirts();
+      res.status(200).json(shirts);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
   async search(req, res) {
     try {
       const { color, size } = req.query;
@@ -33,6 +42,7 @@ class ShirtController {
     try {
       const { id } = req.params;
       const { amount } = req.body;
+      console.log(id, amount);
       const shirt = await ShirtService.updateStock(id, amount);
       res.status(200).json(shirt);
     } catch (error) {

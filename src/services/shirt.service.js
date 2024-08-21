@@ -9,6 +9,10 @@ class ShirtService {
     return await ShirtRepository.findAll();
   }
 
+  async getAvailableShirts() {
+    return await ShirtRepository.find({ stock: { gt: 0 } });
+  }
+
   async searchShirts(color, size) {
     return await ShirtRepository.find({ color, size });
   }
@@ -16,8 +20,11 @@ class ShirtService {
   async updateStock(id, amount) {
     const shirt = await ShirtRepository.find({ id });
     if (shirt) {
-      shirt.stock += amount;
-      return await ShirtRepository.update(id, { stock: shirt.stock });
+      if (amount < 0 && shirt[0].stock < Math.abs(amount)) {
+        throw new Error("Stock can't be negative");
+      }
+      shirt[0].stock += amount;
+      return await ShirtRepository.update(id, { stock: shirt[0].stock });
     }
     throw new Error("Shirt not found");
   }
