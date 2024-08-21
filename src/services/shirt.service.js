@@ -29,6 +29,10 @@ class ShirtService {
     throw new Error("Shirt not found");
   }
 
+  async editShirt(id, data) {
+    return await ShirtRepository.update(id, data);
+  }
+
   async deleteShirt(id) {
     return await ShirtRepository.delete(id);
   }

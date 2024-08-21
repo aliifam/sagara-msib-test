@@ -5,6 +5,34 @@ const router = express.Router();
 
 /**
  * @openapi
+ * components:
+ *   schemas:
+ *     Shirt:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The unique identifier for the shirt
+ *         name:
+ *           type: string
+ *           description: The name of the shirt
+ *         color:
+ *           type: string
+ *           description: The color of the shirt
+ *         size:
+ *           type: string
+ *           description: The size of the shirt
+ *         price:
+ *           type: number
+ *           format: float
+ *           description: The price of the shirt
+ *         stock:
+ *           type: integer
+ *           description: The stock quantity of the shirt
+ */
+
+/**
+ * @openapi
  * /api/shirts:
  *   post:
  *     summary: Create a new shirt
@@ -18,6 +46,8 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             properties:
+ *               name:
+ *                type: string
  *               color:
  *                 type: string
  *               size:
@@ -90,9 +120,9 @@ router.get("/shirts/search", ShirtController.search);
 /**
  * @openapi
  * /api/shirts/{id}/stock:
- *   put:
+ *   patch:
  *     summary: Update shirt stock
- *     description: update shirt stock by id if minus add - before number if plus just number
+ *     description: Update shirt stock by id. Use a negative number to decrease stock and a positive number to increase stock.
  *     tags:
  *       - Shirts
  *     parameters:
@@ -117,7 +147,7 @@ router.get("/shirts/search", ShirtController.search);
  *       404:
  *         description: Shirt not found
  */
-router.put("/shirts/:id/stock", ShirtController.updateStock);
+router.patch("/shirts/:id/stock", ShirtController.updateStock);
 
 /**
  * @openapi
@@ -201,5 +231,63 @@ router.get("/shirts/low-stock", ShirtController.getLowStock);
  *                 $ref: '#/components/schemas/Shirt'
  */
 router.get("/shirts/available", ShirtController.getAvailable);
+
+/**
+ * @openapi
+ * /api/shirts/{id}:
+ *   put:
+ *     summary: Edit a shirt
+ *     description: Update the details of an existing shirt by ID
+ *     tags:
+ *       - Shirts
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: The ID of the shirt to edit
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "60d5f24e4d0e8f001f6477c2"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the shirt
+ *                 example: "Cool Shirt"
+ *               color:
+ *                 type: string
+ *                 description: The color of the shirt
+ *                 example: "Blue"
+ *               size:
+ *                 type: string
+ *                 description: The size of the shirt
+ *                 example: "M"
+ *               price:
+ *                 type: number
+ *                 format: float
+ *                 description: The price of the shirt
+ *                 example: 19.99
+ *               stock:
+ *                 type: integer
+ *                 description: The stock quantity of the shirt
+ *                 example: 100
+ *     responses:
+ *       200:
+ *         description: Shirt updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Shirt'
+ *       404:
+ *         description: Shirt not found
+ *       400:
+ *         description: Invalid input
+ */
+router.put("/shirts/:id", ShirtController.edit);
 
 export default router;

@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 
 async function main() {
   const shirtsData = Array.from({ length: 100 }, () => ({
-    // name: `Baju ${faker.commerce.productName()}`,
+    name: `Baju ${faker.commerce.productName()}`,
     color: faker.color.human(),
     size: faker.helpers.arrayElement(["S", "M", "L", "XL"]),
     price: faker.datatype.number({ min: 10000, max: 1000000 }),

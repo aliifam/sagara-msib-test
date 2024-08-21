@@ -15,6 +15,7 @@ datasource db {
 
 model Shirt {
   id     String    @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
   color  String
   size   String
   price  Float
